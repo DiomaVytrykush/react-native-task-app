@@ -8,9 +8,23 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" options={{headerTintColor:"#2A86FF"}} component={Home} />
-        <Stack.Screen name="Card" component={Card} />
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen
+          name="Home"
+          options={{
+            headerTintColor: '#2A86FF',
+            headerStyle: {elevation: 0.8, shadowOpacity: 0.8},
+          }}
+          component={Home}
+        />
+        <Stack.Screen
+          name="Card"
+          options={{
+            headerTintColor: '#2A86FF',
+            headerStyle: {elevation: 0.8, shadowOpacity: 0.8},
+          }}
+          component={Card}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

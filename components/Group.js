@@ -1,12 +1,13 @@
 import React from 'react';
 import {StyleSheet, View, Text, Image, TouchableOpacity} from 'react-native';
 
-export const Group = ({avatar, name, description, time, navigation}) => {
+export const Group = ({item, navigation}) => {
+  const {avatar, name, description, time} = item;
   return (
     <View>
       <TouchableOpacity
-        style={styles.groupItem}
-        onPress={() => navigation.navigate('Card')}>
+        style={styles.groupItem}  
+        onPress={() => navigation.navigate('Card', item)}>
         <Image
           style={styles.avatar}
           source={{
@@ -46,9 +47,8 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   time: {
-    borderRadius: 18,
+    borderRadius: 20,
     backgroundColor: '#E9F5FF',
-    borderRadius: 18,
     paddingHorizontal: 15,
     paddingVertical: 10,
     color: 'blue',
