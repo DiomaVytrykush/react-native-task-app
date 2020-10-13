@@ -1,126 +1,51 @@
 import React from 'react';
-import {StyleSheet, View, SectionList, Text} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  SectionList,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {Group} from '../components/Group';
 import axios from 'axios';
+import Swipeable from 'react-native-swipeable';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {connect} from 'react-redux';
+import {deleteItem} from '../redux/actions/items';
+Icon.loadFont();
 
-const DATA = [
-  {
-    title: '11 Жовтня',
-    data: [
-      {
-        avatar: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg',
-        name: 'Босович Віталія',
-        description: 'Нагодувати пацєтка',
-        time: '12:00',
-        phone: '+38 (096) 58 29 110',
-      },
-      {
-        avatar:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgnL-6fb5PhgkCkH3odiqgPmhqoWm6HeRjwQ&usqp=CAU',
-        name: "Витрикуш Дем'ян",
-        description: 'Вмити рохкальце',
-        time: '14:00',
-        phone: '+38 (096) 47 16 559',
-      },
-    ],
-  },
-  {
-    title: '14 Жовтня',
-    data: [
-      {
-        avatar: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg',
-        name: 'Босович Віталія',
-        description: 'Нагодувати пацєтка',
-        time: '12:00',
-        phone: '+38 (096) 58 29 110',
-      },
-      {
-        avatar:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgnL-6fb5PhgkCkH3odiqgPmhqoWm6HeRjwQ&usqp=CAU',
-        name: "Витрикуш Дем'ян",
-        description: 'Вмити рохкальце',
-        time: '14:00',
-        phone: '+38 (096) 47 16 559',
-      },
-    ],
-  },
-  {
-    title: '14 Жовтня',
-    data: [
-      {
-        avatar: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg',
-        name: 'Босович Віталія',
-        description: 'Нагодувати пацєтка',
-        time: '12:00',
-        phone: '+38 (096) 58 29 110',
-      },
-      {
-        avatar:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgnL-6fb5PhgkCkH3odiqgPmhqoWm6HeRjwQ&usqp=CAU',
-        name: "Витрикуш Дем'ян",
-        description: 'Вмити рохкальце',
-        time: '14:00',
-        phone: '+38 (096) 47 16 559',
-      },
-    ],
-  },
-  {
-    title: '14 Жовтня',
-    data: [
-      {
-        avatar: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg',
-        name: 'Босович Віталія',
-        description: 'Нагодувати пацєтка',
-        time: '12:00',
-        phone: '+38 (096) 58 29 110',
-      },
-      {
-        avatar:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgnL-6fb5PhgkCkH3odiqgPmhqoWm6HeRjwQ&usqp=CAU',
-        name: "Витрикуш Дем'ян",
-        description: 'Вмити рохкальце',
-        time: '14:00',
-        phone: '+38 (096) 47 16 559',
-      },
-    ],
-  },
-  {
-    title: '14 Жовтня',
-    data: [
-      {
-        avatar: 'https://i.ytimg.com/vi/1Ne1hqOXKKI/maxresdefault.jpg',
-        name: 'Босович Віталія',
-        description: 'Нагодувати пацєтка',
-        time: '12:00',
-        phone: '+38 (096) 58 29 110',
-      },
-      {
-        avatar:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSgnL-6fb5PhgkCkH3odiqgPmhqoWm6HeRjwQ&usqp=CAU',
-        name: "Витрикуш Дем'ян",
-        description: 'Вмити рохкальце',
-        time: '14:00',
-        phone: '+38 (096) 47 16 559',
-      },
-    ],
-  },
-];
-
-export default function Home(props) {
-  const [data, setData] = React.useState(null);
-  React.useEffect(() => {
-    axios.get('https://trycode.pw/c/9MXR8.json').then(({data}) => {
-      setData(data);
-    });
-  }, []);
+const Home = (props) => {
+  // const [data, setData] = React.useState(null);
+  // React.useEffect(() => {
+  //   axios.get('https://trycode.pw/c/9MXR8.json').then(({data}) => {
+  //     setData(data);
+  //   });
+  // }, []);
   const navigation = props.navigation;
   return (
     <View style={styles.container}>
-      {data && (
+      {props.items && (
         <SectionList
-          sections={data}
+          sections={props.items}
           keyExtractor={(item, index) => item + index}
-          renderItem={({item}) => <Group item={item} navigation={navigation} />}
+          renderItem={({item}) => (
+            <Swipeable
+              rightButtons={[
+                <TouchableOpacity style={styles.trashButton}>
+                  <Icon
+                    name="trash"
+                    size={25}
+                    color="white"
+                    onPress={() => console.log(item)}
+                  />
+                </TouchableOpacity>,
+                <TouchableOpacity style={styles.editButton}>
+                  <Icon name="edit" size={25} color="white" />
+                </TouchableOpacity>,
+              ]}>
+              <Group item={item} navigation={navigation} />
+            </Swipeable>
+          )}
           renderSectionHeader={({section: {title}}) => (
             <Text style={styles.titleText}>{title}</Text>
           )}
@@ -128,11 +53,23 @@ export default function Home(props) {
       )}
     </View>
   );
-}
+};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  trashButton: {
+    backgroundColor: 'red',
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 30,
+  },
+  editButton: {
+    backgroundColor: 'orange',
+    flex: 1,
+    justifyContent: 'center',
+    paddingLeft: 30,
   },
   titleText: {
     marginLeft: 15,
@@ -142,3 +79,17 @@ const styles = StyleSheet.create({
     color: '#000',
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    items: state.itemReducer.items
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    delete: (id) => dispatch(deleteItem(id)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

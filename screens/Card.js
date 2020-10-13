@@ -10,7 +10,7 @@ export default function Card(props) {
       <Text style={styles.description}>{props.route.params.phone}</Text>
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonView}>
-          <Button>AAA</Button>
+          <Button>Виконати завдання</Button>
         </View>
         <View style={styles.phoneButtonView}>
           <Button style={styles.button}>
