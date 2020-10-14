@@ -13,7 +13,7 @@ export default function Card(props) {
           <Button>Виконати завдання</Button>
         </View>
         <View style={styles.phoneButtonView}>
-          <Button style={styles.button}>
+          <Button style={{backgroundColor: "#40A00B"}}>
             <Icon name="phone" size={22} color="white" />
           </Button>
         </View>
@@ -48,8 +48,5 @@ const styles = StyleSheet.create({
   phoneButtonView: {
     width: 45,
     marginLeft: 10,
-  },
-  button: {
-    backgroundColor: 'red',
   },
 });
