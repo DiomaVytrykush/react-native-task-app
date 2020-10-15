@@ -26,7 +26,9 @@ const Home = (props) => {
               rightButtons={[
                 <TouchableOpacity
                   style={styles.trashButton}
-                  onPress={() => props.delete(item.id)}>
+                  onPress={() => {
+                    props.delete(item.id);
+                  }}>
                   <Icon name="trash" size={25} color="white" />
                 </TouchableOpacity>,
                 <TouchableOpacity style={styles.editButton}>

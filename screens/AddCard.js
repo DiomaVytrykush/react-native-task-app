@@ -1,30 +1,74 @@
 import React from 'react';
-import {Text, View, TextInput, StyleSheet} from 'react-native';
-import {Button} from '../components';
+import {Text, View, StyleSheet} from 'react-native';
+import {Button, CustomTextInput} from '../components';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {addItem} from '../redux/actions/items';
 import {connect} from 'react-redux';
 
 Icon.loadFont();
 
-const AddCard = ({navigation, items, add}) => {
-  const [value, onChangeText] = React.useState('');
-  const [number, onChangeNumber] = React.useState('');
-
+const AddCard = ({navigation, add}) => {
+  const [name, onChangeName] = React.useState('');
+  const [phone, onChangePhone] = React.useState('');
+  const [date, onChangeDate] = React.useState('');
+  const [time, onChangeTime] = React.useState('');
+  const [error, setError] = React.useState('');
+  let errorMessage = () => {
+    return (
+      <View
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text
+          style={{
+            color: 'red',
+          }}>
+          {error}
+        </Text>
+      </View>
+    );
+  };
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>First and last name</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(text) => onChangeText(text)}
-        value={value}></TextInput>
-      <Text style={styles.text}>Phone number</Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={(text) => onChangeNumber(text)}
-        value={number}></TextInput>
+      <CustomTextInput onChangeText={(date) => onChangeDate(date)}>
+        The date
+      </CustomTextInput>
+      {!!error && errorMessage()}
+      <CustomTextInput onChangeText={(time) => onChangeTime(time)}>
+        The time
+      </CustomTextInput>
+      {!!error && errorMessage()}
+      <CustomTextInput onChangeText={(name) => onChangeName(name)}>
+        First and last name
+      </CustomTextInput>
+      {!!error && errorMessage()}
+      <CustomTextInput onChangeText={(phone) => onChangePhone(phone)}>
+        Phone number
+      </CustomTextInput>
+
       <Button
-        onPress={() => (add(items), navigation.navigate('Home'))}
+        onPress={() => {
+          if (name.trim() === '') {
+            setError(
+              <Icon name="exclamation-triangle" size={12} color="red">
+                This field is required.
+              </Icon>,
+            );
+          } else {
+            setError(null);
+            add(
+              date,
+              'https://res.cloudinary.com/dtbudl0yx/image/fetch/w_2000,f_auto,q_auto,c_fit/https://adamtheautomator.com/content/images/size/w2000/2019/10/user-1633249_1280.png',
+              Math.random(),
+              name,
+              phone,
+              time.toString(),
+            );
+            navigation.navigate('Home');
+          }
+        }}
         style={{backgroundColor: '#40A00B'}}>
         <View style={styles.button}>
           <Icon
@@ -46,15 +90,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
     paddingVertical: 25,
   },
-  text: {
-    marginTop: 20,
-    color: 'grey',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-  },
   button: {
     paddingTop: 5,
     justifyContent: 'center',
@@ -68,16 +103,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = (state) => {
-  return {
-    items: state.itemReducer.items,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    add: (item) => dispatch(addItem(item)),
+    add: (title, avatar, id, name, phone, time) =>
+      dispatch(addItem(title, avatar, id, name, phone, time)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddCard);
+export default connect(null, mapDispatchToProps)(AddCard);

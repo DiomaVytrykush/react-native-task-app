@@ -5,7 +5,12 @@ export const deleteItem = (id) => ({
   id,
 });
 
-export const addItem = (item) => ({
+export const addItem = (title, avatar, id, name, phone, time) => ({
   type: ADD_ITEM,
-  item,
+  title,
+  avatar,
+  id,
+  name,
+  phone,
+  time,
 });
